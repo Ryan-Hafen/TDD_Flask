@@ -10,6 +10,7 @@ RUN apk update && \
 # set environment varibles
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV COMPOSE_CONVERT_WINDOWS_PATHS=1
 
 # set working directory
 WORKDIR /usr/src/app
