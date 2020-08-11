@@ -21,14 +21,13 @@ ENV COMPOSE_CONVERT_WINDOWS_PATHS=1
 
 # install dependencies
 RUN pip install --upgrade pip
-RUN pip install --upgrade setuptools
 COPY ./requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 # lint
 COPY . /usr/src/app/
 RUN pip install black flake8 isort
-RUN flake8 project
+# RUN flake8 project
 RUN black --exclude=migrations project
 RUN isort project/**/*.py
 

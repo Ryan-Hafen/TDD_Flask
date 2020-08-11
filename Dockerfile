@@ -10,14 +10,12 @@ RUN apk update && \
 # set environment varibles
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV COMPOSE_CONVERT_WINDOWS_PATHS=1
 
 # set working directory
 WORKDIR /usr/src/app
 
 # install dependencies
 RUN pip install --upgrade pip
-RUN pip install --upgrade setuptools
 COPY ./requirements.txt /usr/src/app/requirements.txt
 COPY ./requirements-dev.txt /usr/src/app/requirements-dev.txt
 RUN pip install -r requirements-dev.txt
