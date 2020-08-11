@@ -1,11 +1,9 @@
 from flask import Blueprint, request
 from flask_restx import Api, Resource, fields
+from sqlalchemy import exc
 
 from project import db
 from project.api.models import User
-
-# from sqlalchemy import exc
-
 
 users_blueprint = Blueprint("users", __name__)
 api = Api(users_blueprint)
@@ -51,6 +49,32 @@ class Users(Resource):
         if not user:
             api.abort(404, f"User {user_id} does not exist")
         return user, 200
+
+    @api.expect(user, validate=True)
+    def put(self, user_id):
+        post_data = request.get_json()
+        username = post_data.get("username")
+        email = post_data.get("email")
+        response_object = {}
+
+        user = User.query.filter_by(id=user_id).first()
+        if not user:
+            api.abort(404, f"User {user_id} does not exist")
+        user.username = username
+        user.email = email
+        db.session.commit()
+        response_object["message"] = f"{user.id} was updated!"
+        return response_object, 200
+
+    def delete(self, user_id):
+        response_object = {}
+        user = User.query.filter_by(id=user_id).first()
+        if not user:
+            api.abort(404, f"User {user_id} does not exist")
+        db.session.delete(user)
+        db.session.commit()
+        response_object["message"] = f"{user.email} was removed!"
+        return response_object, 200
 
 
 api.add_resource(UsersList, "/users")
