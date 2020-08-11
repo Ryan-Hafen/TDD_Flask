@@ -1,9 +1,11 @@
 from flask import Blueprint, request
 from flask_restx import Api, Resource, fields
-# from sqlalchemy import exc
 
 from project import db
 from project.api.models import User
+
+# from sqlalchemy import exc
+
 
 users_blueprint = Blueprint("users", __name__)
 api = Api(users_blueprint)
