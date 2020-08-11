@@ -9,7 +9,10 @@ def test_add_user(test_app, test_database):
     client = test_app.test_client()
     resp = client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io"}),
+        data=json.dumps(
+            {"username": "michael",
+            "email": "michael@testdriven.io"}
+            ),
         content_type="application/json",
     )
     data = json.loads(resp.data.decode())
@@ -19,7 +22,11 @@ def test_add_user(test_app, test_database):
 
 def test_add_user_invalid_json(test_app, test_database):
     client = test_app.test_client()
-    resp = client.post("/users", data=json.dumps({}), content_type="application/json",)
+    resp = client.post(
+        "/users",
+        data=json.dumps({}),
+        content_type="application/json",
+        )
     data = json.loads(resp.data.decode())
     assert resp.status_code == 400
     assert "Input payload validation failed" in data["message"]
@@ -41,12 +48,18 @@ def test_add_user_duplicate_email(test_app, test_database):
     client = test_app.test_client()
     client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io"}),
+        data=json.dumps(
+            {"username": "michael",
+            "email": "michael@testdriven.io"}
+            ),
         content_type="application/json",
     )
     resp = client.post(
         "/users",
-        data=json.dumps({"username": "michael", "email": "michael@testdriven.io"}),
+        data=json.dumps(
+            {"username": "michael",
+            "email": "michael@testdriven.io"}
+            ),
         content_type="application/json",
     )
     data = json.loads(resp.data.decode())
@@ -135,7 +148,7 @@ def test_update_user(test_app, test_database, add_user):
     "user_id, payload, status_code, message",
     [
         [1, {}, 400, "Input payload validation failed"],
-        [1, {"email": "me@testdriven.io"}, 400, "Input payload validation failed"],
+        [1, {"email": "me@testdriven.io"}, 400, "Input validation failed"],
         [
             999,
             {"username": "me", "email": "me@testdriven.io"},
@@ -149,7 +162,9 @@ def test_update_user_invalid(
 ):
     client = test_app.test_client()
     resp = client.put(
-        f"/users/{user_id}", data=json.dumps(payload), content_type="application/json",
+        f"/users/{user_id}",
+        data=json.dumps(payload),
+        content_type="application/json",
     )
     data = json.loads(resp.data.decode())
     assert resp.status_code == status_code
