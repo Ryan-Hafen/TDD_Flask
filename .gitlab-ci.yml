@@ -41,8 +41,8 @@ test:
     - pip install black flake8 isort pytest
     - pytest "project/tests" -p no:warnings
     - flake8 project
-    - isort project/**/*.py --check-only
-    - black project --check
+    # - isort project/**/*.py --check-only
+    # - black project --check
 
 deploy:
   stage: deploy
